@@ -3,22 +3,19 @@
     <div class="container">
     <button v-if = "authResult" @click="Logout" class="center">Logout</button>
     </div>
-    <div class="post-list" v-for="post in posts"   :key="post.index">  
-      <div class="post">
-          <h3>  Date:  {{post.postdate}} </h3>
-          <p>  <b> Body: </b> {{post.message}} </p>
-      </div>
-    </div>
+      <PostComponent :posts="posts" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import auth from "../auth";
+import PostComponent from "@/components/Post.vue";
 
 export default {
   name: "HomeView",
   components: {
+    PostComponent
   },
    data: function() {
     return {
@@ -55,35 +52,6 @@ export default {
 </script>
 
 <style scoped>
-body{
-  margin: 20px 40px;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-  background: #fafafa;
-  position: relative;
-}
-.post-list{
-  background: rgb(189, 212, 199);
-  margin-bottom: 5px;
-  padding: 3px 5px;
-  border-radius: 10px;
-}
-h3{
-    margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
-  color: #444;
-  background: #7e9756;
-}
-p{
-  background: #796dbd;
-}
-h1, h2, h3, h4, ul, li, a, input, label, button, div, footer{
-  margin: 0;
-  padding: 0;
-  font-family: 'Quicksand', sans-serif;
-  color: #444;
-}
 nav{
   display: flex;
   justify-content: space-between;
@@ -116,21 +84,13 @@ nav{
   display: flex;
   align-items: center;
 }
-.post {
-    width: 80%;
-    position: relative;
-    padding: 10px;
-    margin: 10px auto;
-    border: 1px solid gray;
-    text-align: left;
-}
 .center {
   margin: auto;
   border: 0;
   padding: 10px 20px;
   margin-top: 20px;
   margin: 10px auto;
-  width: 30%; 
+  width: 30%;
 }
 .container {
   display: flex;
