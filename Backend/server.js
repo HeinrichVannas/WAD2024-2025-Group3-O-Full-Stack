@@ -125,3 +125,18 @@ app.get('/auth/logout', (req, res) => {
     console.log('delete jwt request arrived');
     res.status(202).clearCookie('jwt').json({ "Msg": "cookie cleared" }).send
 });
+
+app.get('/posts/get', async (req, res) => {
+    console.log('Posts requested');
+    try {
+        const result = await pool.query("SELECT * FROM posts");
+
+        console.log(`Retrieved ${result.rows.length} posts.`);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+
+        res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+});
