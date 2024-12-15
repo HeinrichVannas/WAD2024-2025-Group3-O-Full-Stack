@@ -3,6 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
 import auth from "../auth";
+import AddPost from "../views/AddPost.vue"
 
 
 
@@ -39,6 +40,12 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "about" */ "../views/AboutView.vue"),
     },
+    {
+        path: "/addpost",
+        name: "AddPost",
+        component: AddPost,
+    },
+
 ];
 
 const router = createRouter({

@@ -5,6 +5,13 @@
     </div>
       <PostComponent :posts="posts" />
   </div>
+  <div class="footer">
+    <div class="container">
+      <button v-if = "authResult" @click='this.$router.push("/addpost")' class="center">Add post</button>
+      <button v-if = "authResult" @click="DeleteAll" class="center">Delete all</button>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -41,6 +48,9 @@ export default {
         console.log("error logout");
       });
     },
+    DeleteAll() {
+      
+    }
   }, 
   mounted() {
         fetch('http://localhost:3000/posts/get')
@@ -96,4 +106,8 @@ nav{
   display: flex;
   justify-content: center;
 }
+.footer {
+  position: sticky
+}
+
 </style>
