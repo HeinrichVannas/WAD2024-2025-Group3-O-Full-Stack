@@ -140,3 +140,23 @@ app.get('/posts/get', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch posts' });
     }
 });
+app.post("/AddPost", async (req, res) => {
+    const { postdate, message } = req.body;
+
+    // Kontrolli, kas postdate ja message on saadetud
+    if (!postdate || !message) {
+        return res.status(400).json({ error: "Postdate and message are required" });
+    }
+
+    try {
+        // Lisa uus postitus andmebaasi
+        const result = await pool.query(
+            "INSERT INTO posts (postdate, message) VALUES ($1, $2) RETURNING *",
+            [postdate, message]
+        );
+        res.status(201).json({ message: "Post added successfully", post: result.rows[0] });
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).json({ error: "Failed to add post" });
+    }
+});

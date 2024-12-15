@@ -13,6 +13,9 @@ export default {
                 console.log(e);
                 console.log("error logout");
             });
+        if (this.authenticated==false){
+            router.router.push("/")
+        }
         return this.user.authenticated;
     }
 

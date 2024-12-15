@@ -10,7 +10,9 @@
   </template>
   
   <script>
+  import auth from "../auth";
   export default {
+    
   name: "AddPost", 
   data() {
       return {
@@ -18,36 +20,62 @@
             date: "",
             body: "",
         },
+        authResult: auth.authenticated()
     };
     },
+    mounted() {
+    // Väljakutse, kui komponent on laetud
+    this.checkAuthentication();
+  },
     methods: {
-        AddPost() {
-                var data = {
-                    date: '16.12.2023',
-                    body: this.post.body,
-                };
 
-                // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
-                fetch("http://localhost:3000/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                    credentials: 'include', //  Don't forget to specify this if you need cookies
-                    body: JSON.stringify(data),
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                console.log(data);
-                this.$router.push("/");
-                })
-                .catch((e) => {
-                console.log(e);
-                console.log("error");
-                });
-            },
-    }, 
+      async checkAuthentication() {
+  try {
+    const isAuthenticated = await auth.authenticated();
+    console.log("Is user authenticated?", isAuthenticated);
+
+    if (!isAuthenticated) {
+      console.warn("User not authenticated, redirecting...");
+      this.$router.push("/");
     }
+  } catch (error) {
+    console.error("Authentication check failed:", error);
+    this.$router.push("/");
+  }
+},
+      AddPost() {
+    // Kasutame ISO stringi, mis on 'YYYY-MM-DD' formaadis
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; 
+
+    const data = {
+        postdate: formattedDate, // Saadame kuupäeva stringina
+        message: this.post.body  // Vormi sisestatud sõnum
+    };
+
+    fetch("http://localhost:3000/AddPost", { // Backend tee
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // Saada JSON-andmed
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Failed to add post");
+        }
+        return response.json();
+    })
+    .then((data) => {
+        console.log("Post added successfully:", data);
+        this.$router.push("/"); // Suuna pärast lisamist
+    })
+    .catch((e) => {
+        console.error("Error adding post:", e);
+    });
+}
+
+    }}
   </script>
   
   <style scoped>
