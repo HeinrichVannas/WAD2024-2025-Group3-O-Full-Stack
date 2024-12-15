@@ -24,7 +24,6 @@
     };
     },
     mounted() {
-    // Väljakutse, kui komponent on laetud
     this.checkAuthentication();
   },
     methods: {
@@ -44,21 +43,20 @@
   }
 },
       AddPost() {
-    // Kasutame ISO stringi, mis on 'YYYY-MM-DD' formaadis
     const today = new Date();
     const formattedDate = today.toISOString().split('T')[0]; 
 
     const data = {
-        postdate: formattedDate, // Saadame kuupäeva stringina
-        message: this.post.body  // Vormi sisestatud sõnum
+        postdate: formattedDate, 
+        message: this.post.body 
     };
 
-    fetch("http://localhost:3000/AddPost", { // Backend tee
+    fetch("http://localhost:3000/AddPost", { 
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Saada JSON-andmed
+        body: JSON.stringify(data),
     })
     .then((response) => {
         if (!response.ok) {
@@ -68,7 +66,7 @@
     })
     .then((data) => {
         console.log("Post added successfully:", data);
-        this.$router.push("/"); // Suuna pärast lisamist
+        this.$router.push("/");
     })
     .catch((e) => {
         console.error("Error adding post:", e);

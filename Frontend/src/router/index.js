@@ -4,6 +4,7 @@ import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
 import auth from "../auth";
 import AddPost from "../views/AddPost.vue"
+import PostDetails from "@/views/PostDetails.vue";
 
 
 
@@ -44,7 +45,12 @@ const routes = [{
         path: "/addpost",
         name: "AddPost",
         component: AddPost,
-    },
+    },{
+        path: "/post/:id", // Dünaamiline tee postituse ID jaoks
+        name: "PostDetails",
+        component: PostDetails,
+        props: true, // Edasta ID propsina
+      },
 
 ];
 

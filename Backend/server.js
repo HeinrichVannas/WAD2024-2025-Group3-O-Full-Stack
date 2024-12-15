@@ -143,13 +143,13 @@ app.get('/posts/get', async (req, res) => {
 app.post("/AddPost", async (req, res) => {
     const { postdate, message } = req.body;
 
-    // Kontrolli, kas postdate ja message on saadetud
+    // Control the sending
     if (!postdate || !message) {
         return res.status(400).json({ error: "Postdate and message are required" });
     }
 
     try {
-        // Lisa uus postitus andmebaasi
+        // Add new post
         const result = await pool.query(
             "INSERT INTO posts (postdate, message) VALUES ($1, $2) RETURNING *",
             [postdate, message]
@@ -160,7 +160,7 @@ app.post("/AddPost", async (req, res) => {
         res.status(500).json({ error: "Failed to add post" });
     }
 });
-// DELETE /DeletePosts - Kustuta kõik postitused
+//delete all posts
 app.delete("/DeletePosts", async (req, res) => {
   try {
     await pool.query("DELETE FROM posts");
@@ -170,3 +170,42 @@ app.delete("/DeletePosts", async (req, res) => {
     res.status(500).json({ error: "Failed to delete posts" });
   }
 });
+app.get("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const result = await pool.query("SELECT * FROM posts WHERE id = $1", [id]);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+      res.status(200).json(result.rows[0]);
+    } catch (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ error: "Failed to fetch post" });
+    }
+  });
+  app.delete("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query("DELETE FROM posts WHERE id = $1", [id]);
+      res.status(200).json({ message: "Post deleted successfully" });
+    } catch (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ error: "Failed to delete post" });
+    }
+  });
+  
+  app.put("/posts/:id", async (req, res) => {
+    const { id } = req.params;
+    const { message } = req.body;
+    try {
+      const result = await pool.query(
+        "UPDATE posts SET message = $1 WHERE id = $2 RETURNING *",
+        [message, id]
+      );
+      res.status(200).json(result.rows[0]);
+    } catch (err) {
+      console.error("Database error:", err);
+      res.status(500).json({ error: "Failed to update post" });
+    }
+  });
