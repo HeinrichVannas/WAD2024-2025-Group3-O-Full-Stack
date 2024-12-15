@@ -49,8 +49,27 @@ export default {
       });
     },
     DeleteAll() {
-      
-    }
+  
+    fetch("http://localhost:3000/DeletePosts", {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete all posts");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("All posts deleted successfully:", data);
+        this.posts=[];
+      })
+      .catch((e) => {
+        console.error("Error deleting posts:", e);
+        alert("Failed to delete posts.");
+      });
+  
+}
+
   }, 
   mounted() {
         fetch('http://localhost:3000/posts/get')

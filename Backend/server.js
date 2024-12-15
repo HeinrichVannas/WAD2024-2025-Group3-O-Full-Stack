@@ -160,3 +160,13 @@ app.post("/AddPost", async (req, res) => {
         res.status(500).json({ error: "Failed to add post" });
     }
 });
+// DELETE /DeletePosts - Kustuta kõik postitused
+app.delete("/DeletePosts", async (req, res) => {
+  try {
+    await pool.query("DELETE FROM posts");
+    res.status(200).json({ message: "All posts deleted successfully" });
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).json({ error: "Failed to delete posts" });
+  }
+});
