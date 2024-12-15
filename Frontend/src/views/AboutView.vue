@@ -1,6 +1,11 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Contact our team:</h1>
+    
+    <li>Heinrich Vannas: heinivannas@gmail.com</li>
+    <li>Artur Tamm: arturtamm02@gmail.com</li>
+    <li>Kaarel Koido: kaarelkoido@gmail.com</li>
+
   </div>
 </template>
 
